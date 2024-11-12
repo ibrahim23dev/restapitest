@@ -1,0 +1,14 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "server.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "env": {
+      "DATABASE_URL": "mongodb+srv://ibrahim:ibrahim2025@prisma.b711l.mongodb.net/PrismaTest",
+      "JWT_SECRET": "ibrahim640"
+    }
+  }
+  
