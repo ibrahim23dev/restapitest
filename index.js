@@ -8,6 +8,9 @@ const mongoose = require('mongoose');
 const app = express();
 const port = process.env.PORT || 5000;
 
+// Define your JWT secret directly in the code
+const JWT_SECRET = "ibrahim640"; // Replace this with your actual secret key
+
 // Middleware
 app.use(express.json());
 app.use(cors({
@@ -21,7 +24,6 @@ mongoose.connect(process.env.DATABASE_URL)
         console.error("Database connection failed:", error.message);
         process.exit(1);
     });
-
 
 // User Schema with Mongoose
 const userSchema = new mongoose.Schema({
@@ -40,7 +42,7 @@ const protect = (req, res, next) => {
         return res.status(401).json({ message: 'Not authorized, token missing' });
     }
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, JWT_SECRET);
         req.user = decoded;
         next();
     } catch (error) {
@@ -72,7 +74,7 @@ app.post('/api/auth/login', async (req, res) => {
         }
         const token = jwt.sign(
             { id: user._id, role: user.role },
-            process.env.JWT_SECRET,
+            JWT_SECRET,
             { expiresIn: '1h' }
         );
         res.status(200).json({ token, role: user.role });
