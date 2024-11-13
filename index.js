@@ -30,7 +30,8 @@ const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    role: { type: String, required: true }
+    role: { type: String, required: true },
+    image: { type: String } // Optional field for user profile image URL
 });
 
 const User = mongoose.model('User', userSchema);
@@ -77,7 +78,12 @@ app.post('/api/auth/login', async (req, res) => {
             JWT_SECRET,
             { expiresIn: '1h' }
         );
-        res.status(200).json({ token, role: user.role });
+        res.status(200).json({ 
+            token, 
+            role: user.role, 
+            name: user.name, 
+            image: user.image // Include image URL in response 
+        });
     } catch (error) {
         res.status(500).json({ message: 'Server error', error: error.message });
     }
